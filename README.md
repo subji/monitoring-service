@@ -1,4 +1,4 @@
-# 소셜 메트릭스 모니터링 서비스
+# 모니터링 서비스
 
 ## 프로젝트 설계
   - 자바 패키지는 속성 (수집현황, 활성화상태, 공통, httpClient 등)으로 나눈다.
@@ -8,7 +8,7 @@
 
 ## 프로젝트 구조
 > ## **Java**
-> - com / daumsoft (groupId) / smm (artifactId)
+> - com / groupId / artifactId (Project Name)
 >   - **buzz** : 채널 별 수집현황
 >     - dto
 >       - BuzzResultDTO : 수집현황 결과 DTO
