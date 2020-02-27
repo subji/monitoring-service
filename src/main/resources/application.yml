@@ -25,7 +25,7 @@ spring:
   profiles:
     active: DEV
   application:
-    name: Monitoring Project
+    name: Social Metrics Monitoring Project
   # WebMVCController 에서 WebMvcConfigurer 를 상속받아 메소드를 오버라이드하기 때문에 아래 설정을 작성할 필요가 없다.
   # 하지만 스프링 부트에서 에러에 대한 기본적인 매핑인 /error 를 처리하기 위해서는 아래의 view resolver 코드를 작성해야 한다.
   mvc:
@@ -34,9 +34,9 @@ spring:
       prefix: /WEB-INF/views/
   # DATABASE
   datasource:
-    username: 
-    password: 
-    url: jdbc:oracle:thin:@:1521:
+    username: biz2017
+    password: biz2017
+    url: jdbc:oracle:thin:@10.1.51.31:1521:ASPDB1
     driver-class-name: oracle.jdbc.driver.OracleDriver
     hikari:
       minimum-idle: 10 # 최소 Pool 개수
@@ -57,20 +57,20 @@ spring:
       hibernate.enable_lazy_load_no_trans: true
       hibernate.format_sql: true
     show-sql: true
-  # SPRING SECURITY 
+  # # SPRING SECURITY 
   # security:
   #   user: 
   #     name: social_metrics_monitoring
   #     password: social_metrics_monitoring
-  # SPRING BOOT ADMIN
+  # # SPRING BOOT ADMIN
   # boot:
   #   admin:
   #     client:
   #       username: admin
   #       password: admin
-  #       url: 
+  #       url: http://112.175.32.31:8091
   #       instance:
-  #         service-url: 
+  #         service-url: http://112.175.32.185:8093
   #         metadata:
   #           user:
   #           name: ${spring.security.user.name}
@@ -106,6 +106,9 @@ logging:
     org.springframework: DEBUG
     com.zaxxer.hikari.pool: DEBUG
     com.zaxxer.hikari.HikariDataSource: ERROR
+
+# LOGGING URL
+querytool.url: https://querytool.some.co.kr
 
 # DEV - PROFILE
 ---
