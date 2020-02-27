@@ -1,0 +1,118 @@
+# COMMON
+server:
+  servlet:
+    context-path: /
+    session:
+      timeout: 300m
+    encoding: # spring.http.encoding.force, enabled, charset => Deprecated
+      force: true
+      enabled: true
+      charset: UTF-8
+  tomcat:
+    max-threads: 2000
+    max-swallow-size: 20MB
+    connection-timeout: 180s
+    max-http-form-post-size: 20MB
+    accesslog:
+      suffix: .log
+      enabled: true
+      directory: logs
+      prefix: access_log
+      file-date-format: yyyy-MM-dd
+
+# SPRING
+spring:
+  profiles:
+    active: DEV
+  application:
+    name: Monitoring Project
+  # WebMVCController 에서 WebMvcConfigurer 를 상속받아 메소드를 오버라이드하기 때문에 아래 설정을 작성할 필요가 없다.
+  # 하지만 스프링 부트에서 에러에 대한 기본적인 매핑인 /error 를 처리하기 위해서는 아래의 view resolver 코드를 작성해야 한다.
+  mvc:
+    view:
+      suffix: .jsp
+      prefix: /WEB-INF/views/
+  # DATABASE
+  datasource:
+    username: 
+    password: 
+    url: jdbc:oracle:thin:@:1521:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    hikari:
+      minimum-idle: 10 # 최소 Pool 개수
+      auto-commit: true # AutoCommit 여부
+      idle-timeout: 100000 # Connection Pool 의 휴식 시간 (ms)
+      max-lifetime: 1800000 # Connection Pool 의 최대 lifetime (ms), 이 시간 후에는 Connection Pool 이 닫힌다.
+      maximum-pool-size: 10 # 최대 Pool 개수
+      connection-timeout: 30000 # 요청 대기 시간 (ms)
+  # JPA (Java Persistence API)
+  jpa:
+    open-in-view: false # 영속성(Persistent) 을 프레젠테이션 계층까지 가지고 가는 것 => 서비스 레이어가 아닌 Controller 까지 가져간다는 뜻
+    hibernate:
+      ddl-auto: none # create 의 경우 서버 실행시마다 매번 DB 를 초기화 시킴
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # 테이블명을 기본전략으로 자동으로 만들어준다. 해당 옵션은 변수이름을 변환없이 그대로 사용하는것이다.
+      use-new-id-generator-mappings: false # MySQL => AUTO_INCREMENT, ORACLE => SEQUENCE 사용방식. false 는 JPA 가 사용하는 기본 넘버링 전략을 따라가지 않는 것
+    properties:
+      hibernate.enable_lazy_load_no_trans: true
+      hibernate.format_sql: true
+    show-sql: true
+  # SPRING SECURITY 
+  # security:
+  #   user: 
+  #     name: social_metrics_monitoring
+  #     password: social_metrics_monitoring
+  # SPRING BOOT ADMIN
+  # boot:
+  #   admin:
+  #     client:
+  #       username: admin
+  #       password: admin
+  #       url: 
+  #       instance:
+  #         service-url: 
+  #         metadata:
+  #           user:
+  #           name: ${spring.security.user.name}
+  #           password: ${spring.security.user.password}
+
+# ACQUATOR
+management:
+  endpoint.shutdown.enabled: true
+  endpoint.health.show-details: always
+  endpoint.info.enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# LOG
+logging:
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file: 
+    max-size: 1024MB
+    max-history: 30
+    name: log/social-metrics-monitoring-service.log
+  level:
+    com: DEBUG
+    root: ERROR
+    jdbc.audit: OFF
+    jdbc.sqlonly: OFF
+    jdbc.sqltiming: DEBUG
+    org.hibernate.sql: DEBUG
+    jdbc.resultsettable: DEBUG
+    org.springframework: DEBUG
+    com.zaxxer.hikari.pool: DEBUG
+    com.zaxxer.hikari.HikariDataSource: ERROR
+
+# DEV - PROFILE
+---
+spring.profiles: DEV
+spring.profiles.include: development
+
+# PROD - PROFILE
+--- 
+spring.profiles: PROD
+spring.profiles.include: product
